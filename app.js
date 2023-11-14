@@ -4,20 +4,20 @@ const fs = require("fs");
 const app = express();
 const jsonParser = express.json();
 
+const filePath = "anecs.json";
 
 app.use(express.static(__dirname + "/public"));
 
-const filePath = "anecs.json";
 
-app.get("/", (req, res) =>{
+app.get("/categories/:category", (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
-});
+})
 
 app.get("/anecs", function (req, res) {
     const content = fs.readFileSync(filePath, "utf8");
     const anecs = JSON.parse(content);
 
-    res.send(anecs).send( );
+    res.send(anecs);
 });
 
 app.get("/anecs/:id", function (req, res) {

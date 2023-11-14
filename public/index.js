@@ -1,10 +1,13 @@
 let likeButtons = [];
 
 async function getAnecs() {
-    let path = "/anecs";
-    path += category ? "/categories/" + category : "";
 
-    const response = await fetch(path, {
+    let pathname = (window.location.pathname);
+    let endpoint = '/anecs' + pathname;
+
+    console.log(endpoint);
+
+    const response = await fetch(endpoint, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
@@ -23,7 +26,7 @@ async function getAnecs() {
             // выставляем стили для нажатых кнопок лайка
             if (localStorage.getItem(buttonId)) {
                 likeButton.classList.add('liked');
-            } 
+            }
 
             likeButton.addEventListener("click", async function () {
                 let change;
@@ -61,27 +64,22 @@ async function getAnecs() {
 }
 
 // добавление контейнера с анекдотом на главную станицу 
-    function addAnec(anec, listContainer) {
-        let anecText = "";
-        for (let line of anec.text) {
-           anecText += `
-                <div>${line}</div>
-           `;
-        }
-        let anecHTML = `
-                            <div class="anec">
+function addAnec(anec, listContainer) {
+    let anecText = "";
+    for (let line of anec.text) {
+        anecText += `<div>${line}</div>`;
+    }
+    let anecHTML = `<div class="anec">
                                 <div class="anec__text">${anecText}</div>
                                 <div class="anec__footer">
                                     <div id="likeValue${+anec.id}" class="anec__likes">${anec.likes}</div>
                                     <button id="likeButton${+anec.id}" class="anec__like_button">Тупа лайк</button>    
                                 </div class="anec__footer">
-                                
-                            </div>
-                        `;
+                            </div>`;
 
-        listContainer.insertAdjacentHTML("beforeend", anecHTML);
+    listContainer.insertAdjacentHTML("beforeend", anecHTML);
 
-    }
+}
 
 
 
