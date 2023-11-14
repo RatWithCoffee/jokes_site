@@ -1,0 +1,8 @@
+{
+    "name": "expressapp",
+    "version": "1.0.0",
+    "dependencies": {
+        "eslint": "^8.53.0",
+        "express": "^4.17.0"
+    }
+}
