@@ -65,19 +65,26 @@ async function getAnecs() {
 
 // добавление контейнера с анекдотом на главную станицу 
 function addAnec(anec, listContainer) {
-    let anecText = "";
-    for (let line of anec.text) {
-        anecText += `<div>${line}</div>`;
-    }
     let anecHTML = `<div class="anec">
-                                <div class="anec__text">${anecText}</div>
+                                <div class="anec__text" id="anecText${+anec.id}"></div>
                                 <div class="anec__footer">
                                     <div id="likeValue${+anec.id}" class="anec__likes">${anec.likes}</div>
                                     <button id="likeButton${+anec.id}" class="anec__like_button">Тупа лайк</button>    
                                 </div class="anec__footer">
                             </div>`;
 
+
     listContainer.insertAdjacentHTML("beforeend", anecHTML);
+
+    // добавление текста анекдота
+    let lineDiv;
+    let anecText = document.getElementById(`anecText${+anec.id}`);
+    console.log(anec.text);
+    for (let line of anec.text) {
+        lineDiv = document.createElement('div');
+        lineDiv.textContent = line;
+        anecText.appendChild(lineDiv);
+    }
 
 }
 

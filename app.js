@@ -6,11 +6,21 @@ const jsonParser = express.json();
 
 const filePath = "anecs.json";
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public/view"));
+app.use(express.static(__dirname + "/public/style"));
+app.use(express.static(__dirname + "/public/scripts"));
 
 
 app.get("/categories/:category", (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
+})
+
+app.get("/admin_validation", (req, res) => {
+    res.sendFile(__dirname + '/public/admin_validation.html');
+})
+
+app.get("/admin", (req, res) => {
+    res.sendFile(__dirname + '/public/admin.html');
 })
 
 app.get("/anecs", function (req, res) {
@@ -75,13 +85,13 @@ app.post("/anecs", jsonParser, function (req, res) {
 
     if (!req.body) return res.sendStatus(400);
 
-    let anec = { text: req.body.text, likes: req.body.likes };
 
     let data = fs.readFileSync(filePath, "utf8");
     let anecs = JSON.parse(data);
 
     const id = Math.max.apply(Math, anecs.map(function (e) { return e.id; }))
-    anec.id = id + 1;
+    let anec = { id: id + 1, text: req.body.text, likes: req.body.likes };
+
     anecs.push(anec);
     data = JSON.stringify(anecs);
     fs.writeFileSync("anecs.json", data);
