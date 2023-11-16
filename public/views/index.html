@@ -9,19 +9,16 @@
     <script type="text/javascript" src="/index.js"></script>
 </head>
 
-<body onload="getAnecs()">
+<body onload="showAnecsList()">
     <div class="fixed-header">
         <div class="fixed-header__item">СОЮЗ ЮМОРИСТОВ</div>
-        <a href="add.html" class="fixed-header__item">Добавить анекдот</a>
-        <a href="about.html" class="fixed-header__item">О нас</a>
+        <a href="/add" class="fixed-header__item">Добавить анекдот</a>
+        <a href="/about" class="fixed-header__item">О нас</a>
     </div>
 
 
     <div class="main-container">
-        <div class="sidenav">
-            <a href="/categories/stupid" class="sidenav__item">Тупые, но смешные</a>
-            <a href="#" class="sidenav__item">Анекдоты про другую хуйню</a>
-            <a href="#" class="sidenav__item">Анекдоты еще про одну хуйню</a>
+        <div class="sidenav" id="sidenav">
         </div>
         <div class="anecs-list">
         </div>

@@ -1,22 +1,23 @@
-let likeButtons = [];
+const likeButtons = [];
 
-async function getAnecs() {
-
+async function showAnecsList() {
     let pathname = (window.location.pathname);
     let endpoint = '/anecs' + pathname;
 
     console.log(endpoint);
-
     const response = await fetch(endpoint, {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
 
+  
+
     if (response.ok) {
         let listContainer = document.querySelector(".anecs-list");
         anecs = await response.json();
+        console.log(anecs);
         anecs.forEach(anec => {
-            addAnec(anec, listContainer);
+            showAnec(anec, listContainer);
 
             // добавление обработчика нажатия кнопки лайка
             const buttonId = "likeButton" + anec.id;
@@ -64,7 +65,7 @@ async function getAnecs() {
 }
 
 // добавление контейнера с анекдотом на главную станицу 
-function addAnec(anec, listContainer) {
+function showAnec(anec, listContainer) {
     let anecHTML = `<div class="anec">
                                 <div class="anec__text" id="anecText${+anec.id}"></div>
                                 <div class="anec__footer">
@@ -79,7 +80,6 @@ function addAnec(anec, listContainer) {
     // добавление текста анекдота
     let lineDiv;
     let anecText = document.getElementById(`anecText${+anec.id}`);
-    console.log(anec.text);
     for (let line of anec.text) {
         lineDiv = document.createElement('div');
         lineDiv.textContent = line;
