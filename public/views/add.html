@@ -7,25 +7,43 @@
     <title>Document</title>
     <title>ДОБАВИТЬ ПРЕКОЛ</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="add.js"></script>
 </head>
 
 <body>
-    <from>
-        <textarea class="textarea" id="textarea" placeholder="Type your message here..."></textarea>
-        <button id="submitButton">Добавить</button>
-    </from>    
-    
+    <div class="center-container">
+        <div class="fixed-header">
+            <div class="fixed-header__item site-name">СОЮЗ ЮМОРИСТОВ</div>
+            <a href="/add" class="fixed-header__item">Добавить анекдот</a>
+            <a href="/about" class="fixed-header__item">О нас</a>
+        </div>
+
+        <textarea class="add-textarea" id="textarea" rows="4" cols="50" placeholder="Введите свой анекдот"
+            required></textarea>
+        <div class="add-footer">
+            <input type="checkbox" id="agreement">
+            <div class="error-message" id="errorMessage"></div>
+            <label for="agreement">Анекдот соответствует правилам сайта</label>
+        </div>
+        <button class="button add-button" id="submitButton">Добавить</button>
+
+
+    </div>
+
+
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <p>Ваш анекдот был отправлен на проверку администратору</p>
-            <button id="addAnecButton">Добавить еще анекдот</button>
-            <button id="toHomeButton">На главную страницу</button>
+            <div class="modal-footer">
+                <button id="addAnecButton" class="button">Добавить еще анекдот</button>
+                <button id="toHomeButton" class="button">На главную страницу</button>
+            </div>
         </div>
 
     </div>
 
-    <script type="text/javascript" src="add.js"></script>
+   
 </body>
 
 </html>

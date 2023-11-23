@@ -3,188 +3,327 @@
      padding: 0;
  }
 
+ a,
+ a:hover,
+ a:active,
+ a:focus,
+ a:active {
+     text-decoration: none;
+     color: var(--text-color)
+ }
 
+
+ input {
+     padding: 0.5rem;
+     border-radius: 6px;
+ }
+
+ label {
+    margin: 0.3em;
+ }
+
+ button {
+     border-radius: 40px;
+     border: 0.05rem solid var(--border-color);
+     background-color: var(--main-color);
+     padding: 0.5rem;
+     color: var(--text-color);
+     cursor: pointer;
+ }
+
+ .button:hover,
+ button:active {
+     background-color: var(--active-color);
+ }
+
+
+ body {
+     background-color: var(--back-color);
+     font-family: "Roboto", "Arial", sans-serif;
+     color: var(--text-color);
+ }
 
  :root {
-     --main-color: #4F6F52;
+     --blue-color: #007ACC;
+     --main-color: #3e3e42;
+     --active-color: #545459;
+     --back-color: #1e1e1e;
+     --border-color: #6f6f76;
+     --like-color: #ff0707fd;
+     --text-color: #e3e3f0;
+     --border-radius: 6px;
+     --rounder-border-radius: 10px;
  }
 
  .fixed-header {
-     background-color: var(--main-color);
+     background-color: var(--blue-color);
      display: flex;
-     flex-direction: row;
-     
+     width: 100%;
+     position: fixed;
+     top: 0;
  }
 
  .fixed-header__item {
-    margin: 1rem 5rem;
-    text-decoration: none;
+     margin: 1rem 0.5rem;
+     /* Общий отступ для маленьких экранов */
  }
 
- .footer {
-     background-color: var(--main-color);
-     margin-top: auto;
+ .site-name {
+     font-weight: bold;
+     color: var(--text-color);
  }
 
+ /* Общие стили для всех размеров экрана */
  .main-container {
      display: flex;
-     flex-direction: row;
-     width: 1000px;
-     margin: 0 auto;
-     background-color: rgb(169, 169, 169);
-     justify-content: flex-start;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+
+     background-color: var(--back-color);
+
+     @media (max-width: 400px) {
+         margin: 3rem 0rem;
+     }
+
+     @media (min-width: 401px) and (max-width: 700px) {
+         margin: 3rem 0rem;
+     }
+
+     @media (min-width: 701px) and (max-width: 1000px) {
+         margin: 3rem 2rem;
+     }
+
+     @media (min-width: 1001px) {
+         margin: 3rem 10rem;
+     }
+
  }
+
+
+
+
+ .image-container {
+     margin: 2rem 0rem;
+     display: none;
+ }
+
+ /* список страниц */
+
+ .pages-list {
+     margin: 3rem;
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .pages-list__item {
+     background: var(--main-color);
+     border-radius: 6px;
+     padding: 0.5rem;
+     margin: 0rem 0.2rem;
+ }
+
+ .pages-list__item.current {
+     background: var(--border-color);
+     border-radius: var(--border-radius);
+     padding: 0.5rem;
+ }
+
+ /* список анекдотов */
 
  .anecs-list {
      display: flex;
      flex-direction: column;
-
+     width: 100%;
  }
 
  .anec {
-     margin: 1rem 1rem;
+     border-radius: var(--rounder-border-radius);
+     border: 0.05rem solid var(--border-color);
+     margin: 0.3rem 1rem;
      padding: 1rem;
-     border: var(--main-color);
-     background-color: rgb(215, 214, 214);
+     background-color: var(--main-color);
  }
 
  .anec__footer {
      display: flex;
      flex-direction: row;
-     justify-content: space-around;
-     background-color: rgb(49, 49, 49);
+     justify-content: end;
  }
 
- .anec__likes {
-    color: white;
+
+ /* кнопка лайка */
+ .like-button {
+     overflow: hidden;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-evenly;
+     border-radius: 40px;
+     border: 0.05rem solid var(--border-color);
+     background-color: var(--main-color);
+     padding: 0.5rem;
  }
 
- .anec__like_button {
-    color: rgb(161, 158, 158);
+ .like-button__value {
+     font-size: medium;
+     margin: 0rem 1rem;
  }
 
-.anec__like_button.liked {
-   color: #ff0000;
-}
-
- .sidenav {
-     margin: 0;
-     padding: 0;
-     width: 40%;
-     background-color: #f1f1f1;
-     /* position: fixed; */
-     height: 100%;
-     /* overflow: auto; */
+ .like-button.liked {
+     background: var(--active-color);
  }
 
- /* Sidebar links */
- .sidenav__item {
+ .like-button__icon {
+     fill: var(--border-color);
+     transition: fill 0.3s ease, transform 0.3s ease;
+ }
+
+ .like-button__icon.liked {
+     fill: var(--like-color);
+     transform: scale(1.2);
+ }
+
+ /*      */
+
+ .center-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     height: 100vh;
+     
+
+ }
+
+ /* .add-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: space-evenly;
+     height: 20%;
+     width: 50%;
+ }  */
+
+ .center-container label {
      display: block;
-     color: black;
-     padding: 16px;
-     text-decoration: none;
  }
 
- /* Active/current link */
- .sidenav__item:active {
-     background-color: #04AA6D;
-     color: white;
- }
-
- /* Links on mouse-over */
- .sidenav__item:hover:not(.active) {
-     background-color: #555;
-     color: white;
- }
 
  textarea {
-    margin-top: 10px;
-    margin-left: 50px;
-    width: 500px;
-    height: 100px;
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
-    border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
-    border-image: none;
-    border-radius: 6px 6px 6px 6px;
-    border-style: none solid solid none;
-    border-width: medium 1px 1px medium;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
-    color: #555555;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 1em;
-    line-height: 1.4em;
-    padding: 5px 8px;
-    transition: background-color 0.2s ease 0s;
-  }
-  
 
-  /* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
+     border-radius: 10px;
+     border: 0.05rem solid var(--border-color);
+     padding: 1rem;
+
+     color: var(--text-color);
+     resize: none;
 
 
- /* On screens that are less than 700px wide, make the sidebar into a topbar */
- @media screen and (max-width: 700px) {
-     .sidebar {
-         width: 100%;
-         height: auto;
-         position: relative;
+ }
+
+ .add-textarea {
+     height: 40%;
+     background-color: var(--main-color);
+
+     @media (max-width: 400px) {
+         width: 80%;
+         height: 50%;
      }
 
-     .sidebar a {
-         float: left;
+     @media (min-width: 401px) and (max-width: 700px) {
+         width: 85%;
      }
 
-     div.content {
-         margin-left: 0;
+     @media (min-width: 701px) and (max-width: 1000px) {
+         width: 70%;
      }
+
+     @media (min-width: 1001px) {
+         width: 50%;
+     }
+
+ }
+
+ .edit-textarea {
+     width: 95%;
+     height: 10rem;
+     background-color: var(--border-color);
  }
 
 
+ .add-footer {
+     display: flex;
+     align-items: center;
+     justify-content: start;
+     width: 50%;
+     margin: 1rem;
+ }
 
- /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
- @media screen and (max-width: 400px) {
-     .sidebar a {
-         text-align: center;
-         float: none;
+ .password-input {
+    margin: 1rem 0rem 2rem 0rem;
+ }
+
+ /* .add-button {
+     margin-left: auto;
+ } */
+
+ /* модальное окно */
+ .modal {
+     display: none;
+     position: fixed;
+     z-index: 1;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgba(0, 0, 0, 0.4);
+ }
+
+ .modal-content {
+     background-color: var(--main-color);
+     margin: 15% auto;
+     padding: 20px;
+     border: 0.1rem solid var(--border-color);
+     border-radius: 10px;
+     width: 30rem;
+     height: 10rem;
+     display: grid;
+     grid-template-rows: auto auto;
+     gap: 10px;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .modal-footer {
+     display: flex;
+     align-items: center;
+     justify-content: space-evenly;
+ }
+
+ .save-button {
+     margin: 3rem;
+ }
+
+ @media (max-width: 400px) {
+     html {
+         font-size: 14px;
+     }
+ }
+
+ @media (min-width: 401px) and (max-width: 700px) {
+     html {
+         font-size: 15px;
+     }
+
+     .fixed-header__item {
+         margin: 1rem 2rem;
+     }
+ }
+
+ @media (min-width: 701px) {
+
+     .fixed-header__item {
+         margin: 1rem 3rem;
      }
  }

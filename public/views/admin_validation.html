@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="/admin_validation.js"></script>
     <title>Document</title>
 </head>
+
 <body>
-    
+    <div class="center-container">
+            <form id="adminValidationForm" class="center-container" method="post" onsubmit="event.preventDefault(); validate(); ">
+                <label for="password" >Пароль от админки: </label>
+                <input type="password" name="password" class="password-input" id="password" required />
+                <div class="error-message" id="errorMessage"></div>
+                <div id="passError" class="error"></div>
+                <button id="adminValidationButton">Войти</button>
+            </form>
+    </div>
+
 </body>
+
 </html>

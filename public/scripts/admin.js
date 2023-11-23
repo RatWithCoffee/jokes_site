@@ -1,3 +1,4 @@
+
 async function showAnecsList() {
     const response = await fetch('/new_anecs', {
         method: "GET",
@@ -40,8 +41,8 @@ async function addAction(text) {
 // добавление контейнера с анекдотом на страницу 
 function showAnec(anec, listContainer) {
     let anecHTML = `<div class="anec">
-                        <textarea class="anec__text" id="anecText${+anec.id}"></textarea>
-                        <div class="anec__footer">
+                        <textarea class="edit-textarea" id="anecText${+anec.id}"></textarea>
+                        <div class="rb-container">
                             <div>
                                 <input type="radio" id="later${anec.id}" name="${anec.id}" value="later" checked/>
                                 <label for="later${anec.id}">Рассмотрим позже</label>
@@ -56,7 +57,7 @@ function showAnec(anec, listContainer) {
                                 <input type="radio" id="delete${anec.id}" name="${anec.id}" value="delete"  />
                                 <label for="delete${anec.id}">Удалить</label>
                             </div> 
-                        </div class="anec__footer">
+                        </div>
                     </div>`;
 
 
