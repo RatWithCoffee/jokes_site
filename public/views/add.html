@@ -7,26 +7,34 @@
     <title>Document</title>
     <title>ДОБАВИТЬ ПРЕКОЛ</title>
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="add.js"></script>
+
 </head>
 
 <body>
     <div class="center-container">
         <div class="fixed-header">
             <div class="fixed-header__item site-name">СОЮЗ ЮМОРИСТОВ</div>
-            <a href="/add" class="fixed-header__item">Добавить анекдот</a>
+            <a href="/" class="fixed-header__item">На главную</a>
             <a href="/about" class="fixed-header__item">О нас</a>
         </div>
 
-        <textarea class="add-textarea" id="textarea" rows="4" cols="50" placeholder="Введите свой анекдот"
-            required></textarea>
-        <div class="add-footer">
-            <input type="checkbox" id="agreement">
-            <div class="error-message" id="errorMessage"></div>
-            <label for="agreement">Анекдот соответствует правилам сайта</label>
-        </div>
-        <button class="button add-button" id="submitButton">Добавить</button>
+        <form id="addForm" class="add-container" noValidate="true" method="post">
+            <textarea class="add-textarea" id="anecTextarea" rows="4" cols="50" placeholder="Введите свой анекдот"
+                required></textarea>
+            <div class="help stretch" id="emptyText">Введите анекдот</div>
+            <div class="checkbox-container fix_row">
+                <input type="checkbox"  class="checkbox-input" id="agreementCheck" required>
+                <label for="agreementCheck"  class="checkbox-label" id="agreementLabel">Анекдот соответствует правилам сайта</label>
 
+            </div>
+
+
+            <button type="submit" class="add-button fix_row" id="submitButton">Добавить</button>
+            <div class="help agr-error" id="emptyAgreement">Необходимо поставить согласие</div>
+
+
+
+        </form>
 
     </div>
 
@@ -43,7 +51,9 @@
 
     </div>
 
-   
+
+    <script type="text/javascript" src="add.js"></script>
+
 </body>
 
 </html>

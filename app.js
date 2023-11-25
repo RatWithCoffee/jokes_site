@@ -13,6 +13,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get("/admin.html", (req, res) => {
+    res.status(404).send();
+})
+
 app.use(expressStatic(__dirname + "/public/views"));
 app.use(expressStatic(__dirname + "/public/styles"));
 app.use(expressStatic(__dirname + "/public/scripts"));
@@ -22,16 +26,18 @@ const anecsFile = "anecs.json";
 const newAnecsFile = 'new_anecs.json';
 
 /// получаем html файлы /////////////////
+ 
 
 app.get("/admin", (req, res) => {
     res.sendFile(__dirname + '/public/views/admin_validation.html');
 })
 
+
 app.post("/admin", (req, res) => {
     if (req.body.password === adminPassword) {
         res.sendFile(__dirname + '/public/views/admin.html');
     } else {
-        res.status(404).send('Invalid password');
+        res.sendFile(__dirname + '/public/views/no_password.html');
     }
 
 })
@@ -39,6 +45,11 @@ app.post("/admin", (req, res) => {
 app.get("/add", (req, res) => {
     res.sendFile(__dirname + '/public/views/add.html');
 })
+
+app.get("/about", (req, res) => {
+    res.sendFile(__dirname + '/public/views/about.html');
+})
+
 
 
 

@@ -1,31 +1,52 @@
-// document.getElementById('adminValidationButton').addEventListener('submit', (event) => {
-    
-
-// });
-
-function validate() {
-    const errorMessage = document.getElementById('errorMessage');
-    // errorMessage.innerHTML = '';
-
-    const password = document.getElementById('password').value;
-    validatePassword(password);
-}
+// const myform = document.getElementById("adminValidationForm");
 
 
-async function validatePassword(pass) {
+// myform.addEventListener('submit', validateForm);
 
-    const response = await fetch("/admin", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            password: pass,
-        })
-    });
+// async function validateForm(e) {
+//     const
+//       form = e.target,
+//       field = Array.from(form.elements);
+  
+//     // сброс полей
+//     field.forEach(i => {
+//       i.setCustomValidity('');
+//       i.parentElement.classList.remove('invalid');
+//     });
+  
+//     // email или телефон заданы?
+//     const err = form.password.value ? '' : 'error';
+//     form.password.setCustomValidity(err);
+//     const isValid = await isValidPassword();
+//     if (!isValid) {
+//         form.password.setCustomValidity('error');
+//     } 
+  
+//     if (!form.checkValidity()) {
+        
+//       // форма не прошла валидацию - отмена отправки
+//       e.preventDefault();
+//       e.stopImmediatePropagation();
+  
+//       // добавляем класс invalid
+//       field.forEach(i => {
+//         if (!i.checkValidity()) {
+//           // поле не прошло валидацию - добавляем класс
+//           i.parentElement.classList.add('invalid');
+//         }
+//       });
+//     } else {
+//         window.location.href = 'admin.html';
+//     }
+//   }
+// async function isValidPassword() {
+//     const response = await fetch("/admin", {
+//         method: "POST",
+//         headers: { "Accept": "application/json", "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//             password: password,
+//         })
+//     });
 
-    if (response.ok) {
-        window.location.href = "/admin.html";
-    } else {
-        errorMessage.innerHTML = 'Ашибка';
-    }
-    
-}
+//     return response.ok;
+// }

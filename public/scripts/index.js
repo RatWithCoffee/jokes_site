@@ -1,6 +1,7 @@
 const likeButtons = [];
 
 
+
 async function showAnecsList() {
     const url = new URL(window.location.href);
 
@@ -12,7 +13,7 @@ async function showAnecsList() {
     // отображаем картинку только на первой странице
     if (page === '1') {
         const imgContainer = document.getElementById('imgContainer');
-        imgContainer.style.display = "block";
+        imgContainer.style.display = "flex";
     }
 
     const response = await fetch(`/anecs?page=${page}&pageSize=20`, {
@@ -40,19 +41,29 @@ async function showAnecsList() {
                 likeButton.getElementsByClassName('like-button__icon')[0].classList.add('liked');
             }
 
+            let isLikeInProgress = false;
             likeButton.addEventListener("click", async function () {
+                if (isLikeInProgress) {
+                    return;
+                }
+
                 // обработка нажатия лайка
+                
+                isLikeInProgress = true; 
+
                 if (localStorage.getItem(buttonId)) { // лайк уже поставлен
                     likeButton.classList.remove('liked');
                     likeButton.getElementsByClassName('like-button__icon')[0].classList.remove('liked');
                     localStorage.removeItem(buttonId)
-                    updateLikeCount(-1, anec);
+                    await updateLikeCount(-1, anec);
                 } else { // лайк еще не поставлен
                     likeButton.classList.add('liked');
                     likeButton.getElementsByClassName('like-button__icon')[0].classList.add('liked');
                     localStorage.setItem(buttonId, 'liked');
-                    updateLikeCount(1, anec);
+                    await updateLikeCount(1, anec);
                 }
+
+                isLikeInProgress = false;
 
 
             });
