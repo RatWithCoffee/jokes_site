@@ -4,18 +4,21 @@
  }
 
  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  li::before {
-    content: "•"; /* Символ или контент, который вы хотите добавить перед элементом списка */
-    color: var(--bullet-color); /* Цвет символа */
-    margin-right: 8px; /* Отступ между символом и текстом элемента списка */
-  }
+     list-style: none;
+     padding: 0;
+ }
+
+ li::before {
+     content: "•";
+     /* Символ или контент, который вы хотите добавить перед элементом списка */
+     color: var(--bullet-color);
+     /* Цвет символа */
+     margin-right: 8px;
+     /* Отступ между символом и текстом элемента списка */
+ }
 
  h3 {
-    color: var(--blue-color);
+     color: var(--blue-color);
  }
 
  a,
@@ -24,9 +27,10 @@
      color: var(--text-color)
  }
 
- a:hover,a:active {
-    text-decoration: none;
-    color: var(--blue-color)
+ a:hover,
+ a:active {
+     text-decoration: none;
+     color: var(--blue-color)
  }
 
 
@@ -87,21 +91,23 @@
  .fixed-header {
      background-color: var(--blue-color);
      display: flex;
+     align-items: center;
+     flex-wrap: wrap; 
      width: 100%;
      position: fixed;
      top: 0;
      z-index: 1000;
 
-    
  }
- .fixed-header a:hover,a:active {
-    text-decoration: none;
-    color: white;
+
+ .fixed-header a:hover,
+ a:active {
+     text-decoration: none;
+     color: white;
  }
 
  .fixed-header__item {
      margin: 1rem 0.5rem;
-     /* Общий отступ для маленьких экранов */
  }
 
  .site-name {
@@ -109,13 +115,11 @@
      color: var(--text-color);
  }
 
- /* Общие стили для всех размеров экрана */
  .main-container {
      display: flex;
      flex-direction: column;
      justify-content: center;
      align-items: center;
-
      background-color: var(--back-color);
 
      padding-top: 3rem;
@@ -147,28 +151,28 @@
  }
 
  .display {
-    display: flex;
+     display: flex;
  }
 
  .image-container img {
-     /* width: 50%; */
      margin: 0 auto;
+
      @media (max-width: 400px) {
-        width: 90%;
-        height: 60%;
-    }
+         width: 90%;
+         height: 60%;
+     }
 
-    @media (min-width: 401px) and (max-width: 700px) {
-        width: 85%;
-    }
+     @media (min-width: 401px) and (max-width: 700px) {
+         width: 85%;
+     }
 
-    @media (min-width: 701px) and (max-width: 1000px) {
-        width: 70%;
-    }
+     @media (min-width: 701px) and (max-width: 1000px) {
+         width: 70%;
+     }
 
-    @media (min-width: 1001px) {
-        width: 60%;
-    }
+     @media (min-width: 1001px) {
+         width: 60%;
+     }
  }
 
  /* список страниц */
@@ -209,7 +213,7 @@
  }
 
  .anec__footer {
-    margin-top: 1rem;
+     margin-top: 1rem;
      display: flex;
      flex-direction: row;
      justify-content: end;
@@ -294,9 +298,13 @@
      grid-column: 1 / span 2;
  }
 
- .fix_row {
+ .fix_row3 {
      grid-row: 3;
  }
+
+ .fix_row4 {
+    grid-row: 4;
+}
 
  .add-textarea {
      height: 100%;
@@ -312,15 +320,6 @@
  .agr-error {
      justify-self: start;
  }
-
-
-
-
-
-
-
-
-
 
  /* модальное окно */
  .modal {
@@ -404,16 +403,23 @@
      }
 
      .fixed-header__item {
-         margin: 1rem 1rem;
+         margin: 1rem 0.5rem;
      }
  }
 
- @media (min-width: 701px) {
 
-     .fixed-header__item {
-         margin: 1rem 3rem;
-     }
- }
+ @media (min-width: 701px) and (max-width: 1000px) {
+    .fixed-header__item {
+        margin: 1rem 1rem;
+    }
+}
+
+@media (min-width: 1001px) {
+    .fixed-header__item {
+        margin: 1rem 3rem;
+    }
+}
+
 
  /* Стилизация рамки для checkbox и label */
  .checkbox-container {
@@ -439,8 +445,8 @@
  }
 
  .checkbox-input:checked {
-    background-color: var(--blue-color);
-}
+     background-color: var(--blue-color);
+ }
 
  .checkbox-input.invalid {
      border: 1px solid var(--error-color);
@@ -452,5 +458,19 @@
  }
 
  .lonely-text {
-    margin: 2rem;
+     margin: 2rem;
  }
+
+
+ ::-webkit-scrollbar {
+    width: 12px; 
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border-color); 
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: var(--main-color); 
+  }
+  

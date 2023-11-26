@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import { adminPassword } from './const_vals.js';
+import { readFileSync, writeFileSync } from "fs";
 import Datastore from 'nedb';
 
 const anecStorage = new Datastore({ filename: 'data/anecs.db' });
@@ -12,6 +13,7 @@ newAnecStorage.loadDatabase();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 const app = express();
 
@@ -27,8 +29,25 @@ app.use(expressStatic(__dirname + "/public/styles"));
 app.use(expressStatic(__dirname + "/public/scripts"));
 app.use(expressStatic(__dirname + "/public/images"));
 
-const anecsFile = "anecs.json";
-const newAnecsFile = 'new_anecs.json';
+
+
+// function utilInsert() {
+//     const anecsFile = "anecs.json";
+//     const content = readFileSync(anecsFile, "utf8");
+//     const anecs = JSON.parse(content);
+//     anecs.forEach(async (anec) => {
+//         const response = await fetch("http://localhost:3000/anecs", {
+//             method: "POST",
+//             headers: { "Accept": "application/json", "Content-Type": "application/json" },
+//             body: JSON.stringify({
+//                 text: anec.text,
+//                 likes: anec.likes
+//             })
+//         });
+//         console.log(anec);
+
+//     });
+// }
 
 /// получаем html файлы /////////////////
 
@@ -59,16 +78,15 @@ app.get("/about", (req, res) => {
     res.sendFile(__dirname + '/public/views/about.html');
 })
 
-
 /// для работы с общим списков анедотов //////////
 
 app.get("/anecs", (req, res) => {
     const page = req.query.page || 1;
     const pageSize = req.query.pageSize || 10;
 
-    let  totalPages = 1;
+    let totalPages = 1;
     anecStorage.count({}, (err, count) => {
-        totalPages = Math.ceil(count / pageSize) ;
+        totalPages = Math.ceil(count / pageSize);
     });
 
     const startIndex = (page - 1) * pageSize;
@@ -153,8 +171,6 @@ app.delete("/new_anecs/:id", (req, res) => {
             res.status(200).send(id);
         }
     });
-
-
 
 });
 
