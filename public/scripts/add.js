@@ -1,16 +1,3 @@
-const modal = document.getElementById("modal");
-const addAnecButton = document.getElementById("addAnecButton");
-const toHomeButton = document.getElementById("toHomeButton");
-
-
-addAnecButton.onclick = function () {
-    textarea.value = '';
-    modal.style.display = "none";
-}
-
-toHomeButton.onclick = function () {
-    window.location.href = '/';
-}
 
 
 const addFrom = document.getElementById("addForm");
@@ -69,6 +56,22 @@ async function submitForm() {
     });
 
 }
+
+const modal = document.getElementById("modal");
+const addAnecButton = document.getElementById("addAnecButton");
+const toHomeButton = document.getElementById("toHomeButton");
+
+
+addAnecButton.onclick = function () {
+    anecTextarea.value = '';
+    agreementCheck.checked = false;
+    modal.style.display = "none";
+}
+
+toHomeButton.onclick = function () {
+    window.location.href = '/';
+}
+
 
 
 

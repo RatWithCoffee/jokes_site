@@ -4,6 +4,7 @@
     "type": "module",
     "dependencies": {
         "eslint": "^8.53.0",
-        "express": "^4.17.0"
+        "express": "^4.17.0",
+        "nedb": "^1.8.0"
     }
 }

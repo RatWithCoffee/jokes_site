@@ -5,9 +5,13 @@ async function showAnecsList() {
         headers: { "Accept": "application/json" }
     });
 
+  
+
     if (response.ok) {
         let listContainer = document.querySelector(".anecs-list");
         anecs = await response.json();
+
+        console.log(anecs)
 
         anecs.forEach(anec => {
             showAnec(anec, listContainer);
@@ -41,21 +45,21 @@ async function addAction(text) {
 // добавление контейнера с анекдотом на страницу 
 function showAnec(anec, listContainer) {
     let anecHTML = `<div class="anec">
-                        <textarea class="edit-textarea" id="anecText${+anec.id}"></textarea>
+                        <textarea class="edit-textarea" id="anecText${anec._id}"></textarea>
                         <div class="rb-container">
                             <div>
-                                <input type="radio" id="later${anec.id}" name="${anec.id}" value="later" checked/>
-                                <label for="later${anec.id}">Рассмотрим позже</label>
+                                <input type="radio" id="later${anec._id}" name="${anec._id}" value="later" checked/>
+                                <label for="later${anec._id}">Рассмотрим позже</label>
                             </div>
 
                             <div>
-                                <input type="radio" id="add${anec.id}" name="${anec.id}" value="add"/>
-                                <label for="add${anec.id}">Добавить</label>
+                                <input type="radio" id="add${anec._id}" name="${anec._id}" value="add"/>
+                                <label for="add${anec._id}">Добавить</label>
                             </div>
                     
                             <div>
-                                <input type="radio" id="delete${anec.id}" name="${anec.id}" value="delete"  />
-                                <label for="delete${anec.id}">Удалить</label>
+                                <input type="radio" id="delete${anec._id}" name="${anec._id}" value="delete"  />
+                                <label for="delete${anec._id}">Удалить</label>
                             </div> 
                         </div>
                     </div>`;
@@ -65,7 +69,7 @@ function showAnec(anec, listContainer) {
 
     // добавление текста анекдота
     let text = '';
-    let anecText = document.getElementById(`anecText${+anec.id}`);
+    let anecText = document.getElementById(`anecText${anec._id}`);
     for (let line of anec.text) {
         text += line;
         text += '\n';

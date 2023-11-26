@@ -1,10 +1,15 @@
-import express, { json, static as expressStatic } from "express";
-import { readFileSync, writeFileSync } from "fs";
+import express, { static as expressStatic } from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
-import {adminPassword} from './const_vals.js';
- 
+import { adminPassword } from './const_vals.js';
+import Datastore from 'nedb';
+
+const anecStorage = new Datastore({ filename: 'data/anecs.db' });
+const newAnecStorage = new Datastore({ filename: 'data/new_anecs.db' });
+anecStorage.loadDatabase();
+newAnecStorage.loadDatabase();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -26,7 +31,7 @@ const anecsFile = "anecs.json";
 const newAnecsFile = 'new_anecs.json';
 
 /// получаем html файлы /////////////////
- 
+
 
 app.get("/admin", (req, res) => {
     res.sendFile(__dirname + '/public/views/admin_validation.html');
@@ -55,41 +60,37 @@ app.get("/about", (req, res) => {
 })
 
 
-
-
 /// для работы с общим списков анедотов //////////
 
 app.get("/anecs", (req, res) => {
-    const content = readFileSync(anecsFile, "utf8");
-    const anecs = JSON.parse(content);
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 10;
 
-    const page = parseInt(req.query.page);
-    const pageSize = parseInt(req.query.pageSize);
+    let  totalPages = 1;
+    anecStorage.count({}, (err, count) => {
+        totalPages = Math.ceil(count / pageSize) ;
+    });
 
     const startIndex = (page - 1) * pageSize;
-    const endIndex = page * pageSize;
 
-    const paginatedAnecs = anecs.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(anecs.length / pageSize);
-
-
-    res.send({ anecs: paginatedAnecs, totalPages: totalPages });
+    anecStorage.find({}).skip(startIndex).limit(pageSize).exec((err, anecs) => {
+        res.send({ anecs: anecs, totalPages: totalPages });
+    });
 });
 
 
 app.get("/anecs/:id", (req, res) => {
-    const content = readFileSync(anecsFile, "utf8");
-    const anecs = JSON.parse(content);
+    const id = req.params.id;
 
-    const id = parseInt(req.params.id);
-    const anec = anecs.find(item => item.id === id);
+    anecStorage.findOne({ _id: id }, (err, anec) => {
+        if (anec) {
+            res.send(anec).send();
+        } else {
+            res.status(404).send();
+        }
+    });
 
-    if (anec) {
-        res.send(anec);
-    }
-    else {
-        res.status(404).send();
-    }
+
 });
 
 
@@ -97,37 +98,27 @@ app.get("/anecs/:id", (req, res) => {
 app.patch("/anecs/:id", (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
-    const content = readFileSync(anecsFile, "utf8");
-    const anecs = JSON.parse(content);
+    const id = req.params.id;
 
-    const id = parseInt(req.params.id);
-    const anec = anecs.find(p => p.id === id);
+    anecStorage.findOne({ _id: id }, (err, anec) => {
+        if (anec) {
+            anecStorage.update({ _id: id }, { $set: { likes: req.body.likes } }, {}, (err) => {
+                res.json({ likes: req.body.likes });
+            });
+        } else {
+            res.status(404).send();
+        }
+    });
 
-
-    if (anec) {
-        anec.likes = req.body.likes;
-        const data = JSON.stringify(anecs);
-        writeFileSync(anecsFile, data);
-        res.json({ likes: anec.likes });
-    } else {
-        res.status(404).send();
-    }
 
 });
 
 app.post("/anecs", (req, res) => {
-
     if (!req.body) return res.sendStatus(400);
 
-    let data = readFileSync(anecsFile, "utf8");
-    let anecs = JSON.parse(data);
+    const anec = { text: req.body.text, likes: req.body.likes };
+    anecStorage.insert(anec);
 
-    const id = Math.max.apply(Math, anecs.map(function (e) { return e.id; }))
-    let anec = { id: id + 1, text: req.body.text, likes: req.body.likes, category: req.body.category };
-
-    anecs.push(anec);
-    data = JSON.stringify(anecs);
-    writeFileSync(anecsFile, data);
     res.send(anec);
 })
 
@@ -135,59 +126,35 @@ app.post("/anecs", (req, res) => {
 
 // получение всех предложенных пользователем анекдотов
 app.get("/new_anecs", (req, res) => {
-    const content = readFileSync(newAnecsFile, "utf8");
-    const anecs = JSON.parse(content);
-
-    res.send(anecs);
+    newAnecStorage.find({}, (err, anecs) => {
+        res.send(anecs);
+    });
 });
 
-// добавление предложенного пользователем анекдота к остальным анекдотам
+// добавление предложенного пользователем анекдота в предложку
 app.post("/new_anecs", (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
-    let data = readFileSync(newAnecsFile, "utf8");
-    let id, anecs;
-    if (data === '' || data === '[]' ) {
-        console.log('sdg');
-        id = 0;
-        anecs = [];
-    } else {
-        anecs = JSON.parse(data);
-        id = Math.max.apply(Math, anecs.map(function (e) { return e.id; }));
-    }
+    const anec = { text: req.body.text };
+    newAnecStorage.insert(anec);
 
-    const anec = { id: id + 1, text: req.body.text };
-
-    anecs.push(anec);
-    data = JSON.stringify(anecs);
-    writeFileSync(newAnecsFile, data);
     res.send(anec);
 })
 
 // удаление предложенного пользователем анекдота
 app.delete("/new_anecs/:id", (req, res) => {
-    const content = readFileSync(newAnecsFile, "utf8");
-    const anecs = JSON.parse(content);
+    const id = req.params.id;
 
-    const id = parseInt(req.params.id);
-
-    let index = -1;
-    for (let i = 0; i < anecs.length; i++) {
-        if (anecs[i].id === id) {
-            index = i;
-            break;
+    newAnecStorage.remove({ _id: id }, function (err, count) {
+        if (err || count != 1) {
+            return res.status(404).send();;
         }
-    }
+        else {
+            res.status(200).send(id);
+        }
+    });
 
 
-    if (index !== -1) {
-        const anec = anecs.splice(index, 1)[0];
-        const data = JSON.stringify(anecs);
-        writeFileSync(newAnecsFile, data);
-        res.send(anec);
-    } else {
-        res.status(404).send();
-    }
 
 });
 
