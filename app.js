@@ -32,6 +32,10 @@ app.get("/admin", (req, res) => {
     res.sendFile(__dirname + '/public/views/admin_validation.html');
 })
 
+app.get("/rules", (req, res) => {
+    res.sendFile(__dirname + '/public/views/rules.html');
+})
+
 
 app.post("/admin", (req, res) => {
     if (req.body.password === adminPassword) {
