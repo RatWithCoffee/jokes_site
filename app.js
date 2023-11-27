@@ -3,16 +3,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import { adminPassword } from './const_vals.js';
-import { readFileSync, writeFileSync } from "fs";
 import Datastore from 'nedb';
 
 const anecStorage = new Datastore({ filename: 'data/anecs.db' });
+anecStorage.ensureIndex({ fieldName: 'time' });
 const newAnecStorage = new Datastore({ filename: 'data/new_anecs.db' });
 anecStorage.loadDatabase();
 newAnecStorage.loadDatabase();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const currData = new Date();
 
 
 const app = express();
@@ -30,24 +32,6 @@ app.use(expressStatic(__dirname + "/public/scripts"));
 app.use(expressStatic(__dirname + "/public/images"));
 
 
-
-// function utilInsert() {
-//     const anecsFile = "anecs.json";
-//     const content = readFileSync(anecsFile, "utf8");
-//     const anecs = JSON.parse(content);
-//     anecs.forEach(async (anec) => {
-//         const response = await fetch("http://localhost:3000/anecs", {
-//             method: "POST",
-//             headers: { "Accept": "application/json", "Content-Type": "application/json" },
-//             body: JSON.stringify({
-//                 text: anec.text,
-//                 likes: anec.likes
-//             })
-//         });
-//         console.log(anec);
-
-//     });
-// }
 
 /// получаем html файлы /////////////////
 
@@ -91,9 +75,13 @@ app.get("/anecs", (req, res) => {
 
     const startIndex = (page - 1) * pageSize;
 
-    anecStorage.find({}).skip(startIndex).limit(pageSize).exec((err, anecs) => {
-        res.send({ anecs: anecs, totalPages: totalPages });
-    });
+    anecStorage.find({})
+        .sort({ time: -1 })
+        .skip(startIndex)
+        .limit(pageSize)
+        .exec((err, anecs) => {
+            res.send({ anecs: anecs, totalPages: totalPages });
+        });
 });
 
 
@@ -134,11 +122,25 @@ app.patch("/anecs/:id", (req, res) => {
 app.post("/anecs", (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
-    const anec = { text: req.body.text, likes: req.body.likes };
+    const anec = { text: req.body.text, likes: req.body.likes, time: currData.getTime() };
     anecStorage.insert(anec);
 
     res.send(anec);
 })
+
+app.delete("/anecs/:id", (req, res) => {
+    const id = req.params.id;
+
+    anecStorage.remove({ _id: id }, function (err, count) {
+        if (err || count != 1) {
+            return res.status(404).send();;
+        }
+        else {
+            res.status(200).send(id);
+        }
+    });
+
+});
 
 /// для работы с предложенными пользователями анекдотами ///////////////
 
