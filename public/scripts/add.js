@@ -9,9 +9,59 @@ const agreementCheck = document.getElementById("agreementCheck");
 const errorAgreementCheck = document.getElementById("emptyAgreement");
 
 
-addFrom.addEventListener('submit', validateAndSubmit);
+const modalOk = document.getElementById("modalOk");
+const modalLimitExceeded = document.getElementById("modalLimitExceeded");
+const addAnecButton = document.getElementById("addAnecButton");
+const toHomeButtonOk = document.getElementById("toHomeButtonOk");
+const toHomeButtonLimitExceeded = document.getElementById("toHomeButtonLimitExceeded");
 
-async function validateAndSubmit(e) {
+
+addAnecButton.onclick = () => {
+    anecTextarea.value = '';
+    agreementCheck.checked = false;
+    modalOk.style.display = "none";
+    modalLimitExceeded.style.display = "none";
+}
+
+const redirectToHome = () => {
+    window.location.href = '/';
+}
+
+toHomeButtonOk.onclick = toHomeButtonLimitExceeded.onclick = redirectToHome;
+
+
+const clearErrorMessages = () => {
+    errorAgreementCheck.classList.remove('invalid');
+    anecTextarea.classList.remove('invalid');
+    errorAnecTextarea.classList.remove('invalid');
+    agreementCheck.classList.remove('invalid');
+
+}
+
+
+const submitForm = async () => {
+
+    let text = anecTextarea.value;
+    let lineArr = text.split("\n");
+
+    const response = await fetch("/new_anecs", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            text: lineArr,
+            likes: 0
+        })
+    });
+
+    if (response.status === 429) {
+        modalLimitExceeded.style.display = "block";
+    } else {
+        modalOk.style.display = "block";
+    }
+
+}
+
+const validateAndSubmit = async (e) => {
     e.preventDefault();
     e.stopImmediatePropagation();
 
@@ -28,49 +78,16 @@ async function validateAndSubmit(e) {
 
     if (addFrom.checkValidity()) {
         await submitForm();
-        modal.style.display = "block";;
+
     }
 }
 
-
-function clearErrorMessages() {
-    errorAgreementCheck.classList.remove('invalid');
-    anecTextarea.classList.remove('invalid');
-    errorAnecTextarea.classList.remove('invalid');
-    agreementCheck.classList.remove('invalid');
-
-}
+addFrom.addEventListener('submit', validateAndSubmit);
 
 
-async function submitForm() {
-    let text = anecTextarea.value;
-    let lineArr = text.split("\n");
-
-    const response = await fetch("/new_anecs", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            text: lineArr,
-            likes: 0
-        })
-    });
-
-}
-
-const modal = document.getElementById("modal");
-const addAnecButton = document.getElementById("addAnecButton");
-const toHomeButton = document.getElementById("toHomeButton");
 
 
-addAnecButton.onclick = function () {
-    anecTextarea.value = '';
-    agreementCheck.checked = false;
-    modal.style.display = "none";
-}
 
-toHomeButton.onclick = function () {
-    window.location.href = '/';
-}
 
 
 

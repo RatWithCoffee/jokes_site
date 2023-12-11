@@ -1,9 +1,16 @@
-import express, { static as expressStatic } from "express";
+import express from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
-import { adminPassword } from './const_vals.js';
 import Datastore from 'nedb';
+
+import rateLimit from 'express-rate-limit';
+
+export const rateLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000, 
+  max: 5,
+  message: 'You have exceeded limit!', 
+});
 
 const anecStorage = new Datastore({ filename: 'data/anecs.db' });
 anecStorage.ensureIndex({ fieldName: 'time' });
@@ -22,16 +29,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/admin.html", (req, res) => {
-    res.status(404).send();
-})
 
-app.use(expressStatic(__dirname + "/public/views"));
-app.use(expressStatic(__dirname + "/public/styles"));
-app.use(expressStatic(__dirname + "/public/scripts"));
-app.use(expressStatic(__dirname + "/public/images"));
-
-
+app.use(express.static(__dirname + "/public/views"));
+app.use(express.static(__dirname + "/public/styles"));
+app.use(express.static(__dirname + "/public/scripts"));
+app.use(express.static(__dirname + "/public/images"));
 
 /// получаем html файлы /////////////////
 
@@ -46,8 +48,8 @@ app.get("/rules", (req, res) => {
 
 
 app.post("/admin", (req, res) => {
-    if (req.body.password === adminPassword) {
-        res.sendFile(__dirname + '/public/views/admin.html');
+    if (req.body.password === '12345') {
+        res.sendFile(__dirname + '/private/admin.html');
     } else {
         res.sendFile(__dirname + '/public/views/no_password.html');
     }
@@ -105,15 +107,18 @@ app.patch("/anecs/:id", (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
     const id = req.params.id;
+    const change = parseInt(req.body.change);
 
-    anecStorage.findOne({ _id: id }, (err, anec) => {
-        if (anec) {
-            anecStorage.update({ _id: id }, { $set: { likes: req.body.likes } }, {}, (err) => {
-                res.json({ likes: req.body.likes });
-            });
-        } else {
-            res.status(404).send();
-        }
+    if (isNaN(change)) {
+        res.status(404).send();
+    }
+
+    if (Math.abs(change) != 1) {
+        res.status(404).send();
+    }
+
+    anecStorage.update({ _id: id }, { $inc: { likes: change } }, {}, (err) => {
+        res.json({ change: change });
     });
 
 
@@ -133,7 +138,7 @@ app.delete("/anecs/:id", (req, res) => {
 
     anecStorage.remove({ _id: id }, function (err, count) {
         if (err || count != 1) {
-            return res.status(404).send();;
+            return res.status(404).send();
         }
         else {
             res.status(200).send(id);
@@ -152,7 +157,7 @@ app.get("/new_anecs", (req, res) => {
 });
 
 // добавление предложенного пользователем анекдота в предложку
-app.post("/new_anecs", (req, res) => {
+app.post("/new_anecs",  rateLimiter, (req, res) => {
     if (!req.body) return res.sendStatus(400);
 
     const anec = { text: req.body.text };

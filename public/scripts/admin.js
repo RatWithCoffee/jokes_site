@@ -1,11 +1,11 @@
 
-async function showAnecsList() {
+const showAnecsList = async () => {
     const response = await fetch('/new_anecs', {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
 
-  
+
 
     if (response.ok) {
         let listContainer = document.querySelector(".anecs-list");
@@ -22,7 +22,7 @@ async function showAnecsList() {
 }
 
 // удаление анекдота из предложки 
-async function deleteAction(id) {
+const deleteAction = async (id) => {
     const response = await fetch("/new_anecs/" + id, {
         method: "DELETE",
         headers: { "Accept": "application/json" },
@@ -31,7 +31,7 @@ async function deleteAction(id) {
 }
 
 // добавление анекдота из предложки 
-async function addAction(text) {
+const addAction = async (text) => {
     const response = await fetch('/anecs', {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ async function addAction(text) {
 }
 
 // добавление контейнера с анекдотом на страницу 
-function showAnec(anec, listContainer) {
+ const showAnec = (anec, listContainer) => {
     let anecHTML = `<div class="anec">
                         <textarea class="edit-textarea" id="anecText${anec._id}"></textarea>
                         <div class="rb-container">
@@ -81,7 +81,7 @@ function showAnec(anec, listContainer) {
 
 
 // обработчик для кнопки сохранения изменений
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
     saveButton.addEventListener("click", () => {
         var radioButtons = document.querySelectorAll('input[type="radio"]');

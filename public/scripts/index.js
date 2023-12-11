@@ -2,7 +2,7 @@ const likeButtons = [];
 
 
 
-async function showAnecsList() {
+const showAnecsList = async () => {
     const url = new URL(window.location.href);
 
     let page = url.searchParams.get('page');
@@ -43,14 +43,14 @@ async function showAnecsList() {
             }
 
             let isLikeInProgress = false;
-            likeButton.addEventListener("click", async function () {
+            likeButton.addEventListener("click", async () => {
                 if (isLikeInProgress) {
                     return;
                 }
 
                 // обработка нажатия лайка
-                
-                isLikeInProgress = true; 
+
+                isLikeInProgress = true;
 
                 if (localStorage.getItem(buttonId)) { // лайк уже поставлен
                     likeButton.classList.remove('liked');
@@ -87,24 +87,22 @@ async function showAnecsList() {
 }
 
 // обновление количества лайков
-async function updateLikeCount(change, anec) {
+const updateLikeCount = async (change, anec) => {
     const likeValue = document.getElementById("likeValue" + anec._id);
     const response = await fetch("/anecs/" + anec._id, {
         method: "PATCH",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
-            likes: parseInt(likeValue.innerHTML) + change,
+            change: change,
         }),
     });
+    anec.likes += change;
 
-    if (response.ok) {
-        let data = await response.json();
-        likeValue.innerHTML = data.likes;
-    }
+    likeValue.innerHTML = anec.likes
 }
 
 
-function showPageNumber(num, currentPage) {
+const showPageNumber = (num, currentPage) => {
     const cl = num == currentPage ? "pages-list__item current" : "pages-list__item";
     return `<div class="${cl}">
                 <a href=/?page=${num}>${num}</a>
@@ -112,7 +110,7 @@ function showPageNumber(num, currentPage) {
 }
 
 // добавление контейнера с анекдотом на главную станицу 
-function showAnec(anec, listContainer) {
+const showAnec = (anec, listContainer) => {
     let anecHTML = `<div class="anec">
                                 <div class="anec__text" id="anecText${anec._id}"></div>
                                 <div class="anec__footer">
