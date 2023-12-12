@@ -454,31 +454,6 @@
     align-items: start;
  }
 
- /* .dropdown-content {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--main-color);
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
- }
-
- .dropdown:hover .dropdown-content {
-     display: flex;
- }
-
- .hamburger {
-    display: block;
- }
-
- .hamburger::t
-
- .uhamburger {
-    display: none;
- }
-
-  */
 
 .close {
     border: none;
