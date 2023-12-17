@@ -480,7 +480,7 @@
   }
   
   .navbar {
-    position: absolute;
+    position: fixed;
     /* a higher z-index put navbar above hamburger */
     z-index: 100000;
     top: 0;

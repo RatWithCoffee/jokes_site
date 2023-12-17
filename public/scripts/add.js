@@ -67,7 +67,9 @@ const validateAndSubmit = async (e) => {
 
     clearErrorMessages();
 
-    if (!anecTextarea.validity.valid) {
+    isValid = true;
+    if (!anecTextarea.validity.valid || trim(anecTextarea.value) === '') {
+        isValid = false;
         errorAnecTextarea.classList.add('invalid');
         anecTextarea.classList.add('invalid');
     }
@@ -76,10 +78,15 @@ const validateAndSubmit = async (e) => {
         agreementCheck.classList.add('invalid');
     }
 
-    if (addFrom.checkValidity()) {
+    if (addFrom.checkValidity() && isValid) {
         await submitForm();
 
     }
+}
+
+const trim = (str) => {
+    return str.replace(/^\s+|\s+$/g,"");
+
 }
 
 addFrom.addEventListener('submit', validateAndSubmit);

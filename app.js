@@ -3,6 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import Datastore from 'nedb';
+import dotenv from 'dotenv'
+
 
 import rateLimit from 'express-rate-limit';
 
@@ -12,10 +14,14 @@ export const rateLimiter = rateLimit({
   message: 'You have exceeded limit!', 
 });
 
+dotenv.config()
+const password = process.env.PASSWORD; 
+ 
+
 const anecStorage = new Datastore({ filename: 'data/anecs.db' });
 anecStorage.ensureIndex({ fieldName: 'time' });
 const newAnecStorage = new Datastore({ filename: 'data/new_anecs.db' });
-anecStorage.loadDatabase();
+anecStorage.loadDatabase(); 
 newAnecStorage.loadDatabase();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,7 +54,7 @@ app.get("/rules", (req, res) => {
 
 
 app.post("/admin", (req, res) => {
-    if (req.body.password === '12345') {
+    if (req.body.password === password) {
         res.sendFile(__dirname + '/private/admin.html');
     } else {
         res.sendFile(__dirname + '/public/views/no_password.html');
